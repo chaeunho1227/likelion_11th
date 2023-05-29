@@ -64,10 +64,29 @@ def edit(request, id):
 def update(request, id):
     update_blog = Blog.objects.get(id=id)
     update_blog.title = request.POST['title']
-    update_blog.writer = request.POST['writer']
+    # update_blog.writer = request.POST['writer']
     update_blog.pub_date = timezone.now()
     update_blog.body = request.POST['body']
     update_blog.save()
+
+
+    old_tag_list = update_blog.tags.all()
+    new_tag_list = []
+    words = update_blog.body.split(' ')
+    for w in words:
+        if len(w) > 0 and w[0] == '#':
+            new_tag_list.append(w[1:])
+
+    for old_t in old_tag_list:
+        if old_t not in new_tag_list:
+            update_blog.tags.remove(old_t)
+
+
+    for t in new_tag_list:
+
+        tag, boolean = Tag.objects.get_or_create(name=t)
+        update_blog.tags.add(tag.id)
+
     return redirect('main:detail', update_blog.id)
 
 # delete(삭제) 기능 구현
