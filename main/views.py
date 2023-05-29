@@ -41,8 +41,9 @@ def create(request):
 
         tag_list = []
         for w in words:
-            if len(w) > 0 and w[0] == '#':
-                tag_list.append(w[1:])
+            if len(w) > 0:
+                if w[0] == '#':
+                    tag_list.append(w[1:])
 
         for t in tag_list:
             tag, boolean = Tag.objects.get_or_create(name=t)

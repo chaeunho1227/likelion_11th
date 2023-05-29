@@ -13,9 +13,8 @@
 <p>{{blog.body}}</p>
 
 <p>태그 :
-    <!-- 쿼리가 비어있다고 나옴... -->
-    {% for tag in tags %}
-    <a href="{% url 'main:tag_blogs' tag.id %}">{{t.name}}</a>
+    {% for tag in blog.tags.all %}
+    <a href="{% url 'main:tag_blogs' tag.id %}">{{tag.name}}</a>
     {% endfor %}
 </p>
 
